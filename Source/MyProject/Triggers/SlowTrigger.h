@@ -18,9 +18,14 @@ public:
 
 protected:
 	//////////////////////////////////////////////////////
-	virtual void Action(AActor* InTarget) override;
+	virtual void ActionStart(AActor* InTarget) override;
+	virtual void ActionEnd(AActor* InTarget) override;
+	
 	UPROPERTY(EditAnywhere)
 	float MaxWalkSpeed = 300.0f;
+	UPROPERTY(EditAnywhere)
+	float SlowingConst = 10.0f;
+	float WalkSpeed = 300.0f;
 	//////////////////////////////////////////////////////
 public:	
 	

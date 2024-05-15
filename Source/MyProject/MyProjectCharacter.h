@@ -16,23 +16,16 @@ public:
 
 	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;
+	virtual void BeginPlay() override;
 
 	/** Returns TopDownCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	
-	//////////////////////////////////////////////////////
-	UFUNCTION()
-	void TakeAnyDamage(AActor* DamageActor, float DamagePerTick, const UDamageType* TypeDamage, AController* InstigatedBy, AActor* DamageCauser);
-	void Death();
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<AActor> AfterDeathSpawnActorClass;
-	UPROPERTY(EditAnywhere)
-	float Health = 100.0f;
 
 	//////////////////////////////////////////////////////
-
+	void ActivateAbility(FVector Location);
+	//////////////////////////////////////////////////////
 private:
 	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -41,5 +34,24 @@ private:
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
+
+	//////////////////////////////////////////////////////
+	UFUNCTION()
+	void TakeAnyDamage(AActor* DamageActor, float DamagePerTick, const UDamageType* TypeDamage, AController* InstigatedBy, AActor* DamageCauser);
+	void Death();
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> AfterDeathSpawnActorClass;
+	UPROPERTY(EditAnywhere)
+	float Health = 100.0f;
+
+	///////////////////////////////
+	UPROPERTY()
+	class UBaseAbility* AbilityInstance;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UBaseAbility> AbilityTemplate;
+	//////////////////////////////////////////////////////
+
 };
 

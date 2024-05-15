@@ -12,7 +12,31 @@ ADamageTrigger::ADamageTrigger()
 
 }
 
-void ADamageTrigger::Action(AActor* InTarget)
+//////////////////////////////////////////////////////
+void ADamageTrigger::ActionStart(AActor* InTarget)
 {
-	InTarget->TakeDamage(Damage, FDamageEvent(UDamageType::StaticClass()), nullptr, nullptr);
+	Target = InTarget;
+	UWorld* World = GetWorld();
+	if (IsValid(World) == false)
+	{
+		return;
+	}
+	World->GetTimerManager().SetTimer(DamageTimer, this, &ADamageTrigger::DamageTick, DamageTickRate, true);
 }
+
+void ADamageTrigger::ActionEnd(AActor* InTarget)
+{
+	Target = nullptr;
+	UWorld* World = GetWorld();
+	if (IsValid(World) == false)
+	{
+		return;
+	}
+	World->GetTimerManager().ClearTimer(DamageTimer);
+}
+
+void ADamageTrigger::DamageTick()
+{
+	Target->TakeDamage(Damage, FDamageEvent(UDamageType::StaticClass()), nullptr, nullptr);
+}
+//////////////////////////////////////////////////////

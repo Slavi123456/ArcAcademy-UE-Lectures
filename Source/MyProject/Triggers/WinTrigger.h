@@ -17,7 +17,8 @@ public:
 	AWinTrigger();
 	
 	//////////////////////////////////////////////////////
-	virtual void Action(AActor* InTarget) override;
+	virtual void ActionStart(AActor* InTarget) override;
+	virtual void ActionEnd(AActor* InTarget) override;
 	//////////////////////////////////////////////////////
 
 };

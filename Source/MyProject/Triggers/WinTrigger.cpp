@@ -13,20 +13,24 @@ AWinTrigger::AWinTrigger()
 }
 
 //////////////////////////////////////////////////////
-void AWinTrigger::Action(AActor* InTarget)
+void AWinTrigger::ActionStart(AActor* InTarget)
 {
-		UWorld* World = GetWorld();
-		if (IsValid(World) == false)
-		{
-			return;
-		}
+	UWorld* World = GetWorld();
+	if (IsValid(World) == false)
+	{
+		return;
+	}
 
-		AMyProjectGameMode* GameMode = Cast<AMyProjectGameMode>(World->GetAuthGameMode());
+	AMyProjectGameMode* GameMode = Cast<AMyProjectGameMode>(World->GetAuthGameMode());
 
-		if (IsValid(GameMode))
-		{
-			GameMode->EndGame(true);
-		}
+	if (IsValid(GameMode))
+	{
+		GameMode->EndGame(true);
+	}
+}
+
+void AWinTrigger::ActionEnd(AActor* InTarget)
+{
 }
 
 

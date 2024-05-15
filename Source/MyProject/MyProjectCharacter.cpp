@@ -13,6 +13,8 @@
 #include "MyProject.h"
 #include "MyProjectCharacter.h"
 #include "MyProjectGameMode.h"
+#include "Abilities/BaseAbility.h"
+
 
 AMyProjectCharacter::AMyProjectCharacter()
 {
@@ -55,6 +57,28 @@ AMyProjectCharacter::AMyProjectCharacter()
 void AMyProjectCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+	
+	UWorld* World = GetWorld();
+	if (IsValid(World))
+	{
+		FHitResult HitResult;
+		FVector TraceStartLocation = GetActorLocation();
+		FVector TraceEndLocation = GetActorLocation() + GetActorForwardVector() * 300.0f;
+		FCollisionQueryParams Params; //??
+		Params.AddIgnoredActor(this);
+
+		if (World->LineTraceSingleByChannel(HitResult, TraceStartLocation, TraceEndLocation,ECollisionChannel::ECC_WorldDynamic, Params))
+		{
+			//UE_LOG(LogMyProject, Log, TEXT("TraceHitActor Actor: %s, Comp: %s "), *HitResult.GetActor()->GetName(), *HitResult.GetComponent()->GetName())
+		}
+	}
+}
+
+void AMyProjectCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	AbilityInstance = NewObject<UBaseAbility>(this, AbilityTemplate);
 }
 
 //////////////////////////////////////////////////////
@@ -98,4 +122,14 @@ void AMyProjectCharacter::Death()
 	}
 	Destroy();
 }
+//////////////////////////////////////////////////////
+
+void AMyProjectCharacter::ActivateAbility(FVector Location)
+{
+	if (IsValid(AbilityInstance))
+	{
+		AbilityInstance->Activate(Location);
+	}
+}
+
 //////////////////////////////////////////////////////

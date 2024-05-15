@@ -11,6 +11,7 @@
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
+#include "MyProject.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -53,6 +54,10 @@ void AMyProjectPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &AMyProjectPlayerController::OnTouchTriggered);
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &AMyProjectPlayerController::OnTouchReleased);
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &AMyProjectPlayerController::OnTouchReleased);
+	
+		////////////////////////////////////////////
+		EnhancedInputComponent->BindAction(ActivateAbilityAction, ETriggerEvent::Started, this, &AMyProjectPlayerController::OnActivateAbilityTriggered);
+		////////////////////////////////////////////		
 	}
 	else
 	{
@@ -123,3 +128,28 @@ void AMyProjectPlayerController::OnTouchReleased()
 	bIsTouch = false;
 	OnSetDestinationReleased();
 }
+
+////////////////////////////////////////////
+void AMyProjectPlayerController::OnActivateAbilityTriggered()
+{
+	UE_LOG(LogMyProject, Log, TEXT("Ability"));
+	FHitResult Hit;
+	bool bHitSuccessful = false;
+	if (bIsTouch)
+	{
+		bHitSuccessful = GetHitResultUnderFinger(ETouchIndex::Touch1, ECollisionChannel::ECC_Visibility, true, Hit);
+	}
+	else
+	{
+		bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
+	}
+
+	if (bHitSuccessful) {
+		AMyProjectCharacter* MyProjecCharacter = Cast<AMyProjectCharacter>(GetPawn());
+		if (IsValid(MyProjecCharacter)) {
+			MyProjecCharacter->ActivateAbility(Hit.Location);
+		}
+	}
+}
+
+////////////////////////////////////////////

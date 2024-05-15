@@ -23,40 +23,10 @@ ABaseTrigger::ABaseTrigger()
 	//////////////////////////////////////////////////////
 
 }
-
-//////////////////////////////////////////////////////
-
 // Called when the game starts or when spawned
 void ABaseTrigger::BeginPlay()
 {
 	Super::BeginPlay();
-
-	TArray<AActor*> Actors;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMyProjectCharacter::StaticClass(), Actors);
-
-	if (Actors.Num() > 0)
-	{
-		Target = Actors[0];
-	}
-
-	UWorld* World = GetWorld();
-	if (IsValid(World) == false)
-	{
-		return;
-	}
-	FTimerHandle Timer;
-	World->GetTimerManager().SetTimer(Timer, this, &ABaseTrigger::CustomTick, CustomTickRate, true);
-	
-}
-void ABaseTrigger::CustomTick()
-{
-	if (IsValid(Target))
-	{
-		if ((GetActorLocation() - Target->GetActorLocation()).Length() < Range)
-		{
-			Action(Target);
-		}
-	}
 }
 
 //////////////////////////////////////////////////////
@@ -69,9 +39,6 @@ void ABaseTrigger::OnOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActo
 {
 	ActionEnd(OtherActor);
 }
-void ABaseTrigger::Action(AActor* InTarget)
-{
-}
 ///////////////////////
 void ABaseTrigger::ActionStart(AActor* InTarget)
 {
@@ -82,9 +49,3 @@ void ABaseTrigger::ActionEnd(AActor* InTarget)
 }
 
 //////////////////////////////////////////////////////
-
-// Called every frame
-void ABaseTrigger::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}

@@ -19,8 +19,18 @@ public:
 protected:
 
 	//////////////////////////////////////////////////////
-	virtual void Action(AActor* InTarget) override;
+	virtual void ActionStart(AActor* InTarget) override;
+	virtual void ActionEnd(AActor* InTarget) override;
+	
+	void DamageTick();
+	UPROPERTY()
+	AActor* Target;
+
 	UPROPERTY(EditAnywhere)
-	float Damage = 0.1f;
+	float Damage = 1.0f;
+	UPROPERTY(EditAnywhere)
+	float DamageTickRate = 1.0f;
+
+	FTimerHandle DamageTimer;
 	//////////////////////////////////////////////////////
 };

@@ -42,6 +42,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* SetDestinationTouchAction;
 
+	////////////////////////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ActivateAbilityAction;
+	////////////////////////////////////////////
+
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -58,6 +63,9 @@ protected:
 	void OnTouchTriggered();
 	void OnTouchReleased();
 
+	////////////////////////////////////////////
+	void OnActivateAbilityTriggered();
+	////////////////////////////////////////////
 private:
 	FVector CachedDestination;
 

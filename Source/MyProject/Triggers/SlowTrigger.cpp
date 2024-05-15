@@ -14,19 +14,31 @@ ASlowTrigger::ASlowTrigger()
 }
 
 //////////////////////////////////////////////////////
-void ASlowTrigger::Action(AActor* InTarget)
+
+void ASlowTrigger::ActionStart(AActor* InTarget)
 {
-	MaxWalkSpeed -= 0.1f;
-	UE_LOG(LogMyProject, Log, TEXT("Speed %f"), MaxWalkSpeed);
+	WalkSpeed -= SlowingConst;
+	UE_LOG(LogMyProject, Log, TEXT("Speed %f"), WalkSpeed);
 	AMyProjectCharacter* Character = Cast<AMyProjectCharacter>(InTarget);
 	if (IsValid(Character))
 	{
 		UCharacterMovementComponent* MovementComponent = Character->GetCharacterMovement();
 		if (IsValid(MovementComponent))
 		{
-			MovementComponent->MaxWalkSpeed = MaxWalkSpeed;
+			MovementComponent->MaxWalkSpeed = WalkSpeed;
 		}
 	}
+}
+
+void ASlowTrigger::ActionEnd(AActor* InTarget)
+{
+	if (WalkSpeed < MaxWalkSpeed)
+	{
+		WalkSpeed += SlowingConst;
+		return;
+		//taimer za koito da mu vurne skorostta 
+	}
+
 }
 
 //////////////////////////////////////////////////////
