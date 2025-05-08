@@ -1,3 +1,3 @@
-# MyProject
+# 🎮 MyProject
 
-Developed with Unreal Engine 5
+A learning repository for studying and experimenting with **Unreal Engine**.
